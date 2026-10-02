@@ -1,1 +1,26 @@
 
+name: Build UnBif EXE
+
+on: [workflow_dispatch] # Позволяет запускать сборку кнопкой
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Make and GCC via Choco
+      run: choco install make mingw -y
+
+    - name: Compile UnBif
+      run: |
+        # Используем gcc от mingw и запускаем make
+        make
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: unbif-windows-bin
+        path: unbif.exe
